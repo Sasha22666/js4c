@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Напитки</title>
+</head>
+
+<body>
+    <script>
+        "use strict";
+
+        class HashStorage {
+          
+            addValue (key, value) {
+                this[key] = value;
+            }
+
+            getValue (key) {
+                return this[key];
+            }
+
+            deleteValue (key) {
+                if (key in this) {
+                    delete this[key]
+                    return true
+                }
+                else return false;
+            }
+
+            getKeys () {
+               return Object.keys(this);
+            }
+        }
+
+        var drinkStorage = new HashStorage;
+
+        function getStringValue(message) {
+            let value = prompt(`Введите ${message}:`); //спрашиваем 
+            while (true) //проверка на корректность
+            {
+                let intValue = parseInt(value);
+                if (isNaN(intValue) && value !== null && value.trim()) {
+                    return value;
+                }
+                else {
+                    alert(`Введите, пожалуйста, ${message} корректно!`);
+                    value = prompt(`Введите ${message}:`);
+                }
+            }
+        }
+
+        function infoDrink () {
+            let nameDrink = getStringValue('название напитка'); 
+            
+            let isAlco = confirm('Этот напиток алкогольный?');
+            isAlco = isAlco ? 'да' : 'нет';
+
+            let recept = getStringValue('рецепт');
+                        
+            drinkStorage.addValue (nameDrink, {a:isAlco, r:recept});
+        }
+
+        function getInfoDrink () {
+            let nameDrink = getStringValue('название напитка');
+            
+            let info = drinkStorage.getValue(nameDrink);
+
+            if (info) {
+                alert (`напиток:  ${nameDrink} 
+алкогольный: ${info.a}
+рецепт приготовления:
+${info.r};`)
+            } 
+            else alert (`Нет информации о напитке ${nameDrink}`);
+        }
+
+        function deleteInfoDrink () {
+            let nameDrink = getStringValue('название напитка');
+
+            let delDrink = drinkStorage.deleteValue (nameDrink);
+
+            if (delDrink) {
+                alert (`Информация о напитке ${nameDrink} удалена`)
+            }
+            else alert (`Нет информации о напитке ${nameDrink}`);
+        }
+
+        function listDrink () {
+            let spisok = drinkStorage.getKeys();
+            if (spisok.length>0) {alert(spisok)}
+            else alert ('Список пуст!')
+        }
+
+    </script>
+
+    <input type="button" value="Ввод информации о напитке" onclick="infoDrink ()">
+    <input type="button" value="Получение информации о напитке" onclick="getInfoDrink ()">
+    <input type="button" value="Удаление информации о напитке" onclick="deleteInfoDrink ()">
+    <input type="button" value="Перечень всех напитков" onclick="listDrink ()">
+    
+</body>
+
+</html>
